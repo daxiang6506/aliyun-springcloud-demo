@@ -1,0 +1,66 @@
+version: "2"
+services:
+  discovery1:
+    container_name: discovery1
+    image: registry.aliyuncs.com/jingshanlb/discovery-server
+    labels:
+      # demo only, do not use it in production
+      aliyun.routing.port_8761: http://eureka1
+    environment:
+      - ADDITIONAL_EUREKA_SERVER_LIST=http://discovery2:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=cloud
+
+  discovery2:
+    container_name: discovery2
+    image: registry.aliyuncs.com/jingshanlb/discovery-server
+    environment:
+      - ADDITIONAL_EUREKA_SERVER_LIST=http://discovery1:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=cloud
+
+  gateway:
+    image: registry.aliyuncs.com/jingshanlb/gateway
+    ports:
+      - "8080:8080"
+    labels:
+      aliyun.scale: "2"
+      aliyun.lb.port_8080: http://${slbname}:8080
+    environment:
+      - EUREKA_SERVER_LIST=http://discovery1:8761/eureka/,http://discovery2:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=cloud
+
+  mysql:
+    external:
+      host: ${rdsname}.mysql.rds.aliyuncs.com
+      port: 3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=passw0rd
+      - MYSQL_DATABASE=foodb
+      - MYSQL_USER=user1
+      - MYSQL_PASSWORD=passw0rd
+
+  foo:
+    image: registry.aliyuncs.com/jingshanlb/foo
+    links:
+      - mysql:mysql
+    environment:
+      - EUREKA_SERVER_LIST=http://discovery1:8761/eureka/,http://discovery2:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=cloud
+      - MYSQL_DATABASE=foodb
+      - MYSQL_USERNAME=user1
+      - MYSQL_PASSWORD=passw0rd
+
+  bar:
+    image: registry.aliyuncs.com/jingshanlb/bar
+    environment:
+      - EUREKA_SERVER_LIST=http://discovery1:8761/eureka/,http://discovery2:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=cloud
+      - SERVER_PORT=8080
+      - MANAGEMENT_PORT=8081
+    # volumes:
+    #   - 'foobar_upload:/upload'
+
+  foobar:
+    image: registry.aliyuncs.com/jingshanlb/foobar
+    environment:
+      - EUREKA_SERVER_LIST=http://discovery1:8761/eureka/,http://discovery2:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=cloud

@@ -1,0 +1,37 @@
+server:
+  port: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+---
+spring:
+  profiles: cloud
+  datasource:
+    url: jdbc:mysql://mysql:3306/${{MYSQL_DATABASE}:foodb}
+    username: ${{MYSQL_USERNAME}:user1}
+    password: ${{MYSQL_PASSWORD}:passw0rd}
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL5Dialect
+
+server:
+  port: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_LIST}
+  instance:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}

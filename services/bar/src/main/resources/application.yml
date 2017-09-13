@@ -1,0 +1,54 @@
+server:
+  port: ${{SERVER_PORT}:8080}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+management:
+  port: ${{MANAGEMENT_PORT}:8081}
+#  security:
+#    enabled: true
+
+#security:
+#  basic:
+#    enabled: false
+#  user:
+#    name: admin
+#    password: admin
+
+endpoints:
+  info:
+    id: info
+    sensitive: false
+    enabled: true
+  jmx:
+    domain: bar-service
+    unique-names: true
+    enabled: true
+
+info:
+  app:
+    name: Bar Service
+    description: Spring Cloud Example - Bar Service
+    version: 0.0.1-SNAPSHOT
+
+logging:
+  path: logs
+
+---
+spring:
+  profiles: cloud
+
+server:
+  port: ${{SERVER_PORT}:8080}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_LIST}
+  instance:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
