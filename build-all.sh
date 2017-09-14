@@ -12,7 +12,7 @@ set -e
 # Docker image prefix
 REGPREFIX=registry.cn-hangzhou.aliyuncs.com/xuc/
 
-progress "Building discovery-server(1/5) jar file ......>"
+progress "Building discovery-server(1/5) jar file ...>"
 cd common/discovery-server
 ./gradlew build
 progress "Building discovery-server(1/5) docker image ..."
