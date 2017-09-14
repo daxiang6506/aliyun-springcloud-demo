@@ -3,7 +3,7 @@
 set -e
 
 # Docker image prefix
-REGPREFIX=registry.aliyuncs.com/jingshanlb/
+REGPREFIX=registry.cn-hangzhou.aliyuncs.com/xuc/
 
 docker push ${REGPREFIX}discovery-server
 docker push ${REGPREFIX}gateway
