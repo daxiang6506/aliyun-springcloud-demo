@@ -16,7 +16,7 @@ progress "Building discovery-server(1/5) jar file ...>"
 cd common/discovery-server
 ./gradlew build
 progress "Building discovery-server(1/5) docker image ..."
-docker tag $(docker build -t {REGPREFIX}discovery-server -q .) ${REGPREFIX}discovery-server:$(date -u "+%Y%m%d-%H%M%S")
+docker tag $(docker build -t  {REGPREFIX}discovery-server -q .) ${REGPREFIX}discovery-server:$(date -u "+%Y%m%d-%H%M%S")
 cd -
 
 progress "Building gateway(2/5) jar file ..."
