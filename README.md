@@ -162,3 +162,4 @@ curl http://{hostname}:{port}/message
 另外，Bar服务中包含```spring actuator```。配置信息在[services/bar/src/main/resources/application.yml](services/bar/src/main/resources/application.yml)
 
 Actuator官方示例：[Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
+
