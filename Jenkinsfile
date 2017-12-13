@@ -1,7 +1,7 @@
 pipeline {
   agent none
   stages {
-    stage('') {
+    stage('error') {
       steps {
         retry(count: 1) {
           sleep 1
